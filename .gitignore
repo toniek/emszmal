@@ -1,0 +1,11 @@
+node_modules/
+dist/
+coverage/
+.artifacts/
+*.tgz
+*.tsbuildinfo
+.env
+.env.*
+!.env.example
+test_klucze
+npm-debug.log*

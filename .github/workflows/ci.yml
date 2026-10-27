@@ -1,0 +1,32 @@
+name: CI
+on:
+  push:
+  pull_request:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node: ['22', '24']
+        nest: ['11', '12']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+      - run: npm install --global npm@11
+      - run: npm ci
+      - name: Select NestJS version for compatibility tests
+        run: npm install --no-save --package-lock=false --ignore-scripts @nestjs/common@${{ matrix.nest }} @nestjs/core@${{ matrix.nest }} @nestjs/testing@${{ matrix.nest }}
+      - run: npm run check
+      - uses: actions/upload-artifact@v4
+        with:
+          name: packages-node${{ matrix.node }}-nest${{ matrix.nest }}
+          path: .artifacts/*.tgz

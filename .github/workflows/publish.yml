@@ -1,0 +1,36 @@
+name: Publish
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Version already present in both package manifests
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    uses: ./.github/workflows/ci.yml
+  publish:
+    needs: verify
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          registry-url: https://registry.npmjs.org
+      - run: npm install --global npm@11
+      - run: npm ci
+      - name: Check metadata and release version
+        env:
+          RELEASE_VERSION: ${{ inputs.version }}
+        run: npm run check:release -- "$RELEASE_VERSION"
+      - run: npm run build
+      - run: npm publish --workspace @toniekw/emszmal-client --access public
+      - run: npm publish --workspace @toniekw/nestjs-emszmal --access public
