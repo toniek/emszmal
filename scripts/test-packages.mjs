@@ -78,7 +78,7 @@ try {
     }
     console.log('Offline mode: testing unpacked npm archives with installed dependencies.');
   } else {
-    execFileSync(npm, ['install', '--offline', '--ignore-scripts', '--no-audit', '--no-fund'], { cwd: consumer, stdio: 'inherit' });
+    execFileSync(npm, ['install', '--ignore-scripts', '--no-audit', '--no-fund'], { cwd: consumer, stdio: 'inherit' });
   }
   writeFileSync(join(consumer, 'smoke.mjs'), `
 import assert from 'node:assert/strict';

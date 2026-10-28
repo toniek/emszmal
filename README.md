@@ -47,8 +47,8 @@ i tokeny zachowują tożsamość przy mieszaniu `import` z `require`.
 | `npm run test:packages` | `npm pack`, instalacja w katalogu tymczasowym, ESM/CJS, typy i Nest DI |
 | `npm run test:live` | Test API tylko po jawnym włączeniu |
 
-Testy paczek korzystają z cache npm wypełnionego przez `npm ci`. Archiwa trafiają
-do `.artifacts/`. Gdy dostępne są tylko już zainstalowane zależności, można użyć
+Testy paczek instalują zależności z npm w osobnym projekcie i mogą wymagać
+dostępu do sieci. Archiwa trafiają do `.artifacts/`. Gdy dostępne są tylko już zainstalowane zależności, można użyć
 `npm run test:packages -- --reuse-installed`. Ten wariant wymaga polecenia `tar`:
 kopiuje wymagane zależności do osobnego projektu i rozpakowuje obie biblioteki
 z archiwów, bez odwołań do ich kodu w workspace. Weryfikuje działanie artefaktów;
